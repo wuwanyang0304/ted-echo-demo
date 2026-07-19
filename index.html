@@ -1,0 +1,2536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>TED Echo 原型 Demo 整合优化版</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="TED Echo 原型 Demo 整合优化版" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;TED Echo 原型 Demo 整合优化版&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(--background) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: light-dark(rgb(255 255 255), rgb(24 24 24));
+  --foreground: light-dark(rgb(26 28 31), rgb(255 255 255));
+  --card: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --card-foreground: var(--foreground);
+  --popover: light-dark(rgb(255 255 255), rgb(45 45 45));
+  --popover-foreground: var(--foreground);
+  --primary: light-dark(rgb(51 156 255), rgb(131 195 255));
+  --primary-foreground: light-dark(rgb(255 255 255), rgb(13 13 13));
+  --secondary: light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%));
+  --secondary-foreground: var(--foreground);
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: light-dark(
+    rgb(26 28 31 / 49.4%),
+    rgb(255 255 255 / 49.8%)
+  );
+  --accent: light-dark(rgb(229 242 255), rgb(13 39 63));
+  --accent-foreground: var(--primary);
+  --destructive: light-dark(rgb(226 85 7), rgb(255 133 73));
+  --border: light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%));
+  --input: light-dark(
+    rgb(26 28 31 / 11.8%),
+    color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+  );
+  --ring: light-dark(rgb(51 156 255), rgb(131 195 255 / 76%));
+  --font-size-base: 14px;
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: 12.5px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+  --color-background-primary: var(--background);
+  --color-text-primary: var(--foreground);
+  --color-border-secondary: var(--border);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--viz-font-weight-medium);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+    [aria-pressed=&quot;true&quot;],
+    [aria-selected=&quot;true&quot;],
+    .is-selected
+  ) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+﻿&lt;div id=&quot;ted-echo-optimized-prototype&quot;&gt;
+  &lt;style&gt;
+    #ted-echo-optimized-prototype {
+      --echo-soft: color-mix(in srgb, var(--viz-series-1) 12%, transparent);
+      --echo-soft-2: color-mix(in srgb, var(--viz-series-2) 12%, transparent);
+      --echo-soft-3: color-mix(in srgb, var(--viz-series-3) 12%, transparent);
+      color: var(--foreground);
+      width: 100%;
+      padding: 16px 0 28px;
+    }
+
+    #ted-echo-optimized-prototype * { box-sizing: border-box; }
+
+    #ted-echo-optimized-prototype .echo-stage {
+      width: min(100%, 430px);
+      margin: 0 auto;
+    }
+
+    #ted-echo-optimized-prototype .echo-topbar,
+    #ted-echo-optimized-prototype .echo-progress-row,
+    #ted-echo-optimized-prototype .echo-actions,
+    #ted-echo-optimized-prototype .echo-inline,
+    #ted-echo-optimized-prototype .echo-meta {
+      display: flex;
+      align-items: center;
+    }
+
+    #ted-echo-optimized-prototype .echo-topbar {
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    #ted-echo-optimized-prototype .echo-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-brand-mark {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: var(--primary-foreground);
+      background: var(--primary);
+      border-radius: 7px;
+    }
+
+    #ted-echo-optimized-prototype .echo-sim-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-progress-row {
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    #ted-echo-optimized-prototype .echo-progress-track {
+      flex: 1;
+      height: 4px;
+      background: var(--muted);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    #ted-echo-optimized-prototype .echo-progress-fill {
+      height: 100%;
+      width: 14.285%;
+      background: var(--primary);
+      transition: width 240ms ease;
+    }
+
+    #ted-echo-optimized-prototype .echo-step-label {
+      color: var(--muted-foreground);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    #ted-echo-optimized-prototype .echo-screen { display: none; }
+    #ted-echo-optimized-prototype .echo-screen.is-active { display: block; }
+
+    #ted-echo-optimized-prototype h2,
+    #ted-echo-optimized-prototype h3,
+    #ted-echo-optimized-prototype p { margin-top: 0; }
+
+    #ted-echo-optimized-prototype .echo-kicker {
+      color: var(--muted-foreground);
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    #ted-echo-optimized-prototype .echo-lead {
+      color: var(--muted-foreground);
+      margin-bottom: 18px;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-visual {
+      position: relative;
+      min-height: 210px;
+      margin-bottom: 18px;
+      padding: 22px;
+      overflow: hidden;
+      background: var(--foreground);
+      color: var(--background);
+      border-radius: 8px;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-visual::before,
+    #ted-echo-optimized-prototype .echo-talk-visual::after {
+      content: &quot;&quot;;
+      position: absolute;
+      border: 1px solid color-mix(in srgb, var(--background) 28%, transparent);
+      transform: rotate(-14deg);
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-visual::before {
+      width: 220px;
+      height: 88px;
+      right: -54px;
+      top: 36px;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-visual::after {
+      width: 150px;
+      height: 60px;
+      right: -15px;
+      bottom: 28px;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-tag {
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      padding: 4px 7px;
+      border: 1px solid color-mix(in srgb, var(--background) 42%, transparent);
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-title {
+      position: relative;
+      z-index: 1;
+      max-width: 300px;
+      margin: 38px 0 18px;
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-note {
+      position: relative;
+      z-index: 1;
+      max-width: 290px;
+      margin: 0;
+      opacity: .72;
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-meta {
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-section-label {
+      margin: 20px 0 10px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-choice-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    #ted-echo-optimized-prototype .echo-choice {
+      width: 100%;
+      min-height: 102px;
+      padding: 11px;
+      text-align: left;
+      background: transparent;
+      color: var(--foreground);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    #ted-echo-optimized-prototype .echo-choice:hover,
+    #ted-echo-optimized-prototype .echo-choice.is-selected {
+      border-color: var(--primary);
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+
+    #ted-echo-optimized-prototype .echo-choice-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-choice p {
+      display: none;
+    }
+
+    #ted-echo-optimized-prototype .echo-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    #ted-echo-optimized-prototype .echo-keywords .viz-badge:nth-child(n+3) { display: none; }
+
+    #ted-echo-optimized-prototype .echo-selected-detail {
+      margin-top: 10px;
+    }
+
+    #ted-echo-optimized-prototype .echo-topic-tabs,
+    #ted-echo-optimized-prototype .echo-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-talk-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    #ted-echo-optimized-prototype details.echo-ai-summary,
+    #ted-echo-optimized-prototype details.echo-export,
+    #ted-echo-optimized-prototype details.echo-voice-result {
+      margin: 14px 0;
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype details &gt; summary {
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-extra-angle {
+      margin-top: 12px;
+      padding-left: 12px;
+      border-left: 3px solid var(--primary);
+    }
+
+    #ted-echo-optimized-prototype .echo-mode-switch {
+      margin: 12px 0 16px;
+    }
+
+    #ted-echo-optimized-prototype .echo-input-panel[hidden],
+    #ted-echo-optimized-prototype .echo-voice-result[hidden],
+    #ted-echo-optimized-prototype .echo-prediction-card[hidden] {
+      display: none;
+    }
+
+    #ted-echo-optimized-prototype .echo-prediction-card {
+      margin: 14px 0;
+    }
+
+    #ted-echo-optimized-prototype .echo-prediction-card .echo-actions {
+      margin-top: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-voice-panel {
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-voice-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+      color: var(--muted-foreground);
+    }
+
+    #ted-echo-optimized-prototype .echo-voice-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    #ted-echo-optimized-prototype .echo-voice-score {
+      padding: 10px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-voice-score strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    #ted-echo-optimized-prototype .echo-distribution {
+      margin: 14px 0 18px;
+    }
+
+    #ted-echo-optimized-prototype .echo-distribution-bar {
+      display: flex;
+      height: 12px;
+      overflow: hidden;
+      border-radius: 4px;
+      background: var(--muted);
+    }
+
+    #ted-echo-optimized-prototype .echo-distribution-bar span:nth-child(1) { width: 38%; background: var(--viz-series-1); }
+    #ted-echo-optimized-prototype .echo-distribution-bar span:nth-child(2) { width: 34%; background: var(--viz-series-2); }
+    #ted-echo-optimized-prototype .echo-distribution-bar span:nth-child(3) { width: 28%; background: var(--viz-series-3); }
+
+    #ted-echo-optimized-prototype .echo-distribution-labels {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 7px;
+      color: var(--muted-foreground);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    #ted-echo-optimized-prototype .echo-peer-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    #ted-echo-optimized-prototype .echo-prompt {
+      margin: 12px 0 16px;
+      padding-left: 12px;
+      border-left: 3px solid var(--primary);
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-field { margin-bottom: 14px; }
+    #ted-echo-optimized-prototype .echo-field .form-label { display: block; margin-bottom: 6px; }
+    #ted-echo-optimized-prototype textarea.form-control { min-height: 128px; resize: vertical; }
+
+    #ted-echo-optimized-prototype .echo-counter {
+      margin-top: 5px;
+      color: var(--muted-foreground);
+      text-align: right;
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-actions {
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    #ted-echo-optimized-prototype .echo-actions .btn { min-width: 112px; }
+    #ted-echo-optimized-prototype .echo-actions .btn-primary { margin-left: auto; }
+
+    #ted-echo-optimized-prototype .echo-ai-note {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 16px;
+      padding: 10px 0;
+      color: var(--muted-foreground);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-structure {
+      display: grid;
+      gap: 0;
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-structure-row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-structure-key {
+      color: var(--muted-foreground);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-structure-value { margin: 0; }
+
+    #ted-echo-optimized-prototype .echo-peer {
+      width: 100%;
+      padding: 16px 0;
+      text-align: left;
+      background: transparent;
+      color: var(--foreground);
+      border-top: 1px solid var(--border);
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+      border-left: 0;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    #ted-echo-optimized-prototype .echo-peer.is-selected {
+      padding-inline: 10px;
+      background: var(--accent);
+      color: var(--accent-foreground);
+      border-color: var(--primary);
+    }
+
+    #ted-echo-optimized-prototype .echo-peer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-peer-id {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-avatar {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--echo-soft-2);
+      color: var(--foreground);
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-viewpoint {
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-evidence {
+      margin-bottom: 0;
+      color: var(--muted-foreground);
+    }
+
+    #ted-echo-optimized-prototype .echo-summary-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-summary-list li {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-summary-icon {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--echo-soft);
+    }
+
+    #ted-echo-optimized-prototype .echo-summary-list strong { display: block; margin-bottom: 4px; }
+    #ted-echo-optimized-prototype .echo-summary-list p { margin: 0; color: var(--muted-foreground); }
+
+    #ted-echo-optimized-prototype .echo-history {
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-history-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    #ted-echo-optimized-prototype .echo-history p { margin-bottom: 5px; }
+
+    #ted-echo-optimized-prototype .echo-profile {
+      display: grid;
+      gap: 16px;
+      margin: 14px 0 20px;
+    }
+
+    #ted-echo-optimized-prototype .echo-personal-message {
+      margin: 12px 0 18px;
+    }
+
+    #ted-echo-optimized-prototype .echo-personal-message strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    #ted-echo-optimized-prototype .echo-personal-message p {
+      margin-bottom: 0;
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-row {
+      display: grid;
+      gap: 7px;
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-head,
+    #ted-echo-optimized-prototype .echo-axis-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-head strong {
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-value,
+    #ted-echo-optimized-prototype .echo-axis-labels {
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-track {
+      position: relative;
+      height: 8px;
+      background: var(--muted);
+      border-radius: 999px;
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-track::before {
+      content: &quot;&quot;;
+      position: absolute;
+      left: 50%;
+      top: -3px;
+      bottom: -3px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-axis-marker {
+      position: absolute;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border: 3px solid var(--background);
+      border-radius: 50%;
+      background: var(--primary);
+      transform: translate(-50%, -50%);
+      transition: left 240ms ease;
+    }
+
+    #ted-echo-optimized-prototype .echo-evidence-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 10px 0 18px;
+    }
+
+    #ted-echo-optimized-prototype .echo-feedback {
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-feedback .viz-controls {
+      margin-top: 10px;
+    }
+
+    #ted-echo-optimized-prototype .echo-feedback-status {
+      min-height: 18px;
+      margin: 8px 0 0;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 12px 0 18px;
+    }
+
+    #ted-echo-optimized-prototype .echo-stat-item {
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-stat-item strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    #ted-echo-optimized-prototype .echo-badge-list {
+      display: grid;
+      gap: 9px;
+      margin: 10px 0 16px;
+    }
+
+    #ted-echo-optimized-prototype .echo-badge-row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-review-list {
+      display: grid;
+      gap: 18px;
+      margin: 18px 0;
+    }
+
+    #ted-echo-optimized-prototype .echo-review-item {
+      display: grid;
+      gap: 7px;
+    }
+
+    #ted-echo-optimized-prototype .echo-review-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-review-score {
+      min-width: 42px;
+      color: var(--muted-foreground);
+      text-align: right;
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-review-scale {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-review-result {
+      min-height: 220px;
+      margin-top: 12px;
+      white-space: pre-wrap;
+    }
+
+    #ted-echo-optimized-prototype .echo-share-group {
+      display: grid;
+      gap: 9px;
+      margin: 10px 0 16px;
+    }
+
+    #ted-echo-optimized-prototype .echo-share-option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-share-option:last-child { border-bottom: 0; }
+    #ted-echo-optimized-prototype .echo-share-option input { margin-top: 3px; }
+    #ted-echo-optimized-prototype .echo-share-option strong { display: block; margin-bottom: 2px; }
+    #ted-echo-optimized-prototype .echo-share-option span { color: var(--muted-foreground); font-size: 12px; }
+
+    #ted-echo-optimized-prototype .echo-toast {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: var(--accent);
+      color: var(--accent-foreground);
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    #ted-echo-optimized-prototype .echo-toast.is-visible { display: block; }
+
+    @media (max-width: 430px) {
+      #ted-echo-optimized-prototype { padding-inline: 12px; }
+      #ted-echo-optimized-prototype .echo-actions { align-items: stretch; }
+      #ted-echo-optimized-prototype .echo-actions .btn { min-width: 0; flex: 1; }
+      #ted-echo-optimized-prototype .echo-talk-title { font-size: 24px; }
+      #ted-echo-optimized-prototype .echo-voice-score-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 350px) {
+      #ted-echo-optimized-prototype .echo-choice-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #ted-echo-optimized-prototype .echo-progress-fill,
+      #ted-echo-optimized-prototype .echo-choice { transition: none; }
+    }
+  &lt;/style&gt;
+
+  &lt;main class=&quot;echo-stage&quot; aria-label=&quot;TED Echo 可点击产品原型&quot;&gt;
+    &lt;header&gt;
+      &lt;div class=&quot;echo-topbar&quot;&gt;
+        &lt;div class=&quot;echo-brand&quot;&gt;
+          &lt;span class=&quot;echo-brand-mark&quot;&gt;&lt;i data-lucide=&quot;audio-waveform&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+          &lt;span&gt;TED Echo&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;echo-sim-label&quot;&gt;&lt;i data-lucide=&quot;flask-conical&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;概念原型&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-progress-row&quot; aria-label=&quot;体验进度&quot;&gt;
+        &lt;div class=&quot;echo-progress-track&quot;&gt;&lt;div class=&quot;echo-progress-fill&quot; id=&quot;echo-progress-fill&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;span class=&quot;echo-step-label&quot; id=&quot;echo-step-label&quot;&gt;1 / 7&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+&lt;section class=&quot;echo-screen is-active&quot; data-screen=&quot;0&quot;&gt;
+      &lt;div class=&quot;echo-topic-tabs&quot; role=&quot;group&quot; aria-label=&quot;主题分类&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-topic=&quot;AI&quot; aria-pressed=&quot;true&quot;&gt;AI&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-topic=&quot;教育&quot; aria-pressed=&quot;false&quot;&gt;教育&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-topic=&quot;环境&quot; aria-pressed=&quot;false&quot;&gt;环境&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-topic=&quot;文化&quot; aria-pressed=&quot;false&quot;&gt;文化&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-talk-toolbar&quot;&gt;
+        &lt;p class=&quot;echo-kicker&quot; style=&quot;margin-bottom:0&quot;&gt;本周热议 · 128 人参与&lt;/p&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; id=&quot;echo-favorite-btn&quot; aria-pressed=&quot;false&quot;&gt;&lt;i data-lucide=&quot;bookmark&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 收藏&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-talk-visual&quot; role=&quot;img&quot; aria-label=&quot;关于人工智能与独立思考的演示主题封面&quot;&gt;
+        &lt;span class=&quot;echo-talk-tag&quot;&gt;PROTOTYPE TOPIC&lt;/span&gt;
+        &lt;div class=&quot;echo-talk-title&quot;&gt;AI 会让我们失去独立思考吗？&lt;/div&gt;
+        &lt;p class=&quot;echo-talk-note&quot;&gt;本页为原型演示主题，不冒充真实 TED 演讲。入围后使用企业确认的授权内容。&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-meta&quot;&gt;
+        &lt;span class=&quot;echo-inline&quot;&gt;&lt;i data-lucide=&quot;clock-3&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&amp;nbsp;08:42&lt;/span&gt;
+        &lt;span class=&quot;echo-inline&quot;&gt;&lt;i data-lucide=&quot;languages&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&amp;nbsp;中英字幕&lt;/span&gt;
+        &lt;span class=&quot;echo-inline&quot;&gt;&lt;i data-lucide=&quot;bookmark&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&amp;nbsp;全球议题&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;p class=&quot;echo-section-label&quot;&gt;观看前，带着一个问题&lt;/p&gt;
+      &lt;p class=&quot;echo-prompt&quot;&gt;当 AI 可以快速给出答案时，人还需要慢慢形成自己的判断吗？&lt;/p&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; data-next&gt;模拟观看完成，开始表达&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;echo-screen&quot; data-screen=&quot;1&quot;&gt;
+      &lt;p class=&quot;echo-kicker&quot;&gt;AI 多视角刺激&lt;/p&gt;
+      &lt;h2&gt;选择一个思考入口，或跳过提示直接表达&lt;/h2&gt;
+      &lt;p class=&quot;echo-lead&quot;&gt;提示卡提供角度、关键词和追问，不替用户生成标准观点。&lt;/p&gt;
+      &lt;div class=&quot;echo-choice-list&quot; role=&quot;group&quot; aria-label=&quot;观点视角选择&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;echo-choice&quot; data-perspective=&quot;支持&quot;&gt;
+          &lt;span class=&quot;echo-choice-head&quot;&gt;&lt;i data-lucide=&quot;thumbs-up&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;支持视角&lt;/span&gt;
+          &lt;p&gt;AI 能快速补充信息、发现盲点，可能让人把精力留给更重要的判断。&lt;/p&gt;
+          &lt;span class=&quot;echo-keywords&quot;&gt;&lt;span class=&quot;viz-badge&quot;&gt;效率&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;赋能&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;人机协作&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;echo-choice is-selected&quot; data-perspective=&quot;质疑&quot;&gt;
+          &lt;span class=&quot;echo-choice-head&quot;&gt;&lt;i data-lucide=&quot;scale&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;质疑视角&lt;/span&gt;
+          &lt;p&gt;如果每次都先问 AI，我们会不会逐渐失去独立构建问题和验证答案的耐心？&lt;/p&gt;
+          &lt;span class=&quot;echo-keywords&quot;&gt;&lt;span class=&quot;viz-badge&quot;&gt;依赖&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;惰性&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;责任&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;echo-choice&quot; data-perspective=&quot;因果&quot;&gt;
+          &lt;span class=&quot;echo-choice-head&quot;&gt;&lt;i data-lucide=&quot;git-branch&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;因果拆解&lt;/span&gt;
+          &lt;p&gt;人的思考变化究竟来自 AI 本身，还是学校规则、使用顺序与评价方式？&lt;/p&gt;
+          &lt;span class=&quot;echo-keywords&quot;&gt;&lt;span class=&quot;viz-badge&quot;&gt;原因&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;结果&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;边界&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;echo-choice&quot; data-perspective=&quot;经历&quot;&gt;
+          &lt;span class=&quot;echo-choice-head&quot;&gt;&lt;i data-lucide=&quot;notebook-pen&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;个人经历&lt;/span&gt;
+          &lt;p&gt;回想一次你用 AI 完成学习任务的经历：它在哪一步帮助或妨碍了你？&lt;/p&gt;
+          &lt;span class=&quot;echo-keywords&quot;&gt;&lt;span class=&quot;viz-badge&quot;&gt;课堂&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;作业&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;选择&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;echo-choice&quot; data-perspective=&quot;角色&quot;&gt;
+          &lt;span class=&quot;echo-choice-head&quot;&gt;&lt;i data-lucide=&quot;users&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;角色视角&lt;/span&gt;
+          &lt;p&gt;学生、教师、家长和 AI 平台，会如何定义“合理使用”与“独立完成”？&lt;/p&gt;
+          &lt;span class=&quot;echo-keywords&quot;&gt;&lt;span class=&quot;viz-badge&quot;&gt;学生&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;教师&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;平台&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;echo-choice&quot; data-perspective=&quot;未来&quot;&gt;
+          &lt;span class=&quot;echo-choice-head&quot;&gt;&lt;i data-lucide=&quot;telescope&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;未来情境&lt;/span&gt;
+          &lt;p&gt;五年后，当 AI 成为默认学习伙伴，哪些能力必须由人独立保留？&lt;/p&gt;
+          &lt;span class=&quot;echo-keywords&quot;&gt;&lt;span class=&quot;viz-badge&quot;&gt;五年后&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;规则&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;核心能力&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;card echo-selected-detail&quot;&gt;
+        &lt;strong id=&quot;echo-selected-detail-title&quot;&gt;质疑视角&lt;/strong&gt;
+        &lt;p id=&quot;echo-selected-detail-text&quot; style=&quot;margin:6px 0 0&quot;&gt;如果每次都先问 AI，我们会不会逐渐失去独立构建问题和验证答案的耐心？&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-random-prompt&quot;&gt;&lt;i data-lucide=&quot;shuffle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 随机视角&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-next&gt;用所选角度表达&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-block&quot; id=&quot;echo-skip-prompt&quot; style=&quot;margin-top:10px&quot;&gt;我想自由表达&lt;/button&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;echo-screen&quot; data-screen=&quot;2&quot;&gt;
+      &lt;p class=&quot;echo-kicker&quot;&gt;60 秒 My Talk&lt;/p&gt;
+      &lt;h2&gt;先说出你最想让别人记住的一句话&lt;/h2&gt;
+      &lt;p class=&quot;echo-prompt&quot; id=&quot;echo-selected-prompt&quot;&gt;质疑视角：AI 越方便，人是否越容易放弃主动判断？&lt;/p&gt;
+      &lt;div class=&quot;viz-controls echo-mode-switch&quot; role=&quot;group&quot; aria-label=&quot;表达方式&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-input-mode=&quot;text&quot; aria-pressed=&quot;true&quot;&gt;&lt;i data-lucide=&quot;keyboard&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 文字输入&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-input-mode=&quot;voice&quot; aria-pressed=&quot;false&quot;&gt;&lt;i data-lucide=&quot;mic&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 语音输入&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;echo-input-panel&quot; id=&quot;echo-text-panel&quot;&gt;
+        &lt;div class=&quot;echo-field&quot;&gt;
+          &lt;label class=&quot;form-label&quot; for=&quot;echo-talk-input&quot;&gt;我的观点&lt;/label&gt;
+          &lt;textarea class=&quot;form-control&quot; id=&quot;echo-talk-input&quot;&gt;我认为 AI 不会直接让人失去思考能力，真正的风险是我们把“得到答案”误认为“完成思考”。例如做课程作业时，如果我先让 AI 生成整篇内容，最后很难解释自己的选择；但如果先写出判断，再让 AI 找反例，它反而能帮助我想得更完整。&lt;/textarea&gt;
+          &lt;div class=&quot;echo-counter&quot;&gt;&lt;span id=&quot;echo-char-count&quot;&gt;0&lt;/span&gt; 字 · 建议 60—180 字&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;details class=&quot;echo-ai-summary echo-prediction-card&quot; id=&quot;echo-prediction-card&quot;&gt;
+          &lt;summary&gt;&lt;i data-lucide=&quot;scan-text&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; AI 从你的表达中看到了……&lt;/summary&gt;
+          &lt;div class=&quot;echo-peer-head&quot; style=&quot;margin-top:12px&quot;&gt;&lt;strong&gt;表达摘要&lt;/strong&gt;&lt;span class=&quot;viz-badge&quot; id=&quot;echo-prediction-confidence&quot;&gt;AI 总结 · 模拟&lt;/span&gt;&lt;/div&gt;
+          &lt;p class=&quot;echo-viewpoint&quot; id=&quot;echo-prediction-stance&quot;&gt;你的立场是：AI 不会直接削弱思考，关键在于使用顺序。&lt;/p&gt;
+          &lt;p class=&quot;echo-evidence&quot; id=&quot;echo-prediction-reason&quot;&gt;核心理由：先形成判断再找 AI 验证，比让 AI 直接代写更能保留主动性。&lt;/p&gt;
+          &lt;div class=&quot;echo-extra-angle&quot; id=&quot;echo-extra-angle&quot; hidden&gt;&lt;strong&gt;一个可能遗漏的角度&lt;/strong&gt;&lt;p style=&quot;margin:5px 0 0&quot;&gt;除了个人使用顺序，还可以讨论学校如何设计作业规则，证明学生先进行了独立判断。&lt;/p&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-actions&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-accept-prediction&quot;&gt;这份总结准确&lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-add-angle&quot;&gt;帮我补充遗漏的角度&lt;/button&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; id=&quot;echo-ignore-prediction&quot;&gt;关闭本次总结&lt;/button&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; id=&quot;echo-disable-prediction&quot;&gt;以后不主动显示&lt;/button&gt;
+        &lt;/details&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;echo-input-panel echo-voice-panel&quot; id=&quot;echo-voice-panel&quot; hidden&gt;
+        &lt;div class=&quot;echo-field&quot;&gt;
+          &lt;label class=&quot;form-label&quot; for=&quot;echo-voice-language&quot;&gt;表达语言&lt;/label&gt;
+          &lt;select class=&quot;form-select&quot; id=&quot;echo-voice-language&quot;&gt;&lt;option&gt;English&lt;/option&gt;&lt;option&gt;中文&lt;/option&gt;&lt;/select&gt;
+        &lt;/div&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; id=&quot;echo-voice-btn&quot;&gt;&lt;i data-lucide=&quot;mic&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 开始模拟录音&lt;/button&gt;
+        &lt;div class=&quot;echo-voice-status&quot;&gt;&lt;i data-lucide=&quot;audio-waveform&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span id=&quot;echo-voice-status-text&quot;&gt;语音模式不显示观点预测卡，避免打断自然表达。&lt;/span&gt;&lt;/div&gt;
+        &lt;details class=&quot;echo-voice-result&quot; id=&quot;echo-voice-result&quot; hidden&gt;
+          &lt;summary&gt;查看口语评估（可选）&lt;/summary&gt;
+          &lt;p class=&quot;text-small text-muted&quot; style=&quot;margin-top:10px&quot;&gt;本功能仅供口语练习参考，不影响观点质量判断。&lt;/p&gt;
+          &lt;div class=&quot;echo-voice-score-grid&quot;&gt;
+            &lt;div class=&quot;echo-voice-score&quot;&gt;&lt;strong&gt;82 / 100&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;发音&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;echo-voice-score&quot;&gt;&lt;strong&gt;76 / 100&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;流利度&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;echo-voice-score&quot;&gt;&lt;strong&gt;71 / 100&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;重音节奏&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;table class=&quot;table table-sm&quot; aria-label=&quot;发音纠正示例&quot;&gt;
+            &lt;thead&gt;&lt;tr&gt;&lt;th&gt;词语&lt;/th&gt;&lt;th&gt;问题&lt;/th&gt;&lt;th&gt;纠正建议&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+            &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;independent&lt;/td&gt;&lt;td&gt;重音偏后&lt;/td&gt;&lt;td&gt;重读第三音节 pen&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;evidence&lt;/td&gt;&lt;td&gt;尾音不清晰&lt;/td&gt;&lt;td&gt;放慢 den-ce 的收尾&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+          &lt;/table&gt;
+          &lt;p class=&quot;text-small text-muted&quot;&gt;语音评分为原型模拟；正式版本需由语音识别与发音评测能力实现。&lt;/p&gt;
+        &lt;/details&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-next&gt;让 AI 帮我整理&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;echo-screen&quot; data-screen=&quot;3&quot;&gt;
+      &lt;p class=&quot;echo-kicker&quot;&gt;观点结构化&lt;/p&gt;
+      &lt;h2&gt;这是你的观点，不是 AI 替你写的答案&lt;/h2&gt;
+      &lt;div class=&quot;echo-ai-note&quot;&gt;
+        &lt;i data-lucide=&quot;sparkles&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;&lt;strong&gt;AI 模拟结果&lt;/strong&gt;&lt;br&gt;入围后拟使用赛事开放的飞书 AI 能力，且必须由用户确认或修改。&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-structure&quot;&gt;
+        &lt;div class=&quot;echo-structure-row&quot;&gt;
+          &lt;span class=&quot;echo-structure-key&quot;&gt;立场&lt;/span&gt;
+          &lt;p class=&quot;echo-structure-value&quot;&gt;AI 本身不会取消思考，错误的使用顺序才会。&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-structure-row&quot;&gt;
+          &lt;span class=&quot;echo-structure-key&quot;&gt;理由&lt;/span&gt;
+          &lt;p class=&quot;echo-structure-value&quot;&gt;把得到答案当作完成思考，会跳过自主判断和验证。&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-structure-row&quot;&gt;
+          &lt;span class=&quot;echo-structure-key&quot;&gt;例子&lt;/span&gt;
+          &lt;p class=&quot;echo-structure-value&quot;&gt;先让 AI 完成课程作业后，自己难以解释内容选择。&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-structure-row&quot;&gt;
+          &lt;span class=&quot;echo-structure-key&quot;&gt;问题&lt;/span&gt;
+          &lt;p class=&quot;echo-structure-value&quot;&gt;怎样使用 AI，才能保留自主判断又获得效率？&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回修改&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-next&gt;确认，这是我的意思&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;echo-screen&quot; data-screen=&quot;4&quot;&gt;
+      &lt;p class=&quot;echo-kicker&quot;&gt;真实观点回应&lt;/p&gt;
+      &lt;h2&gt;先看观点分布，再选择你想回应的人&lt;/h2&gt;
+      &lt;p class=&quot;echo-lead&quot;&gt;AI 只分析已授权观点的立场占比并辅助匹配，不生成或冒充真实同伴。&lt;/p&gt;
+      &lt;div class=&quot;echo-distribution&quot; role=&quot;img&quot; aria-label=&quot;24 条原型种子观点中，正方占 38%，反方占 34%，条件或其它观点占 28%&quot;&gt;
+        &lt;div class=&quot;echo-distribution-bar&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-distribution-labels&quot;&gt;&lt;span&gt;正方 38%&lt;/span&gt;&lt;span&gt;反方 34%&lt;/span&gt;&lt;span&gt;其它 28%&lt;/span&gt;&lt;/div&gt;
+        &lt;p class=&quot;text-small text-muted&quot; style=&quot;margin-top:7px&quot;&gt;原型模拟：基于 24 条种子观点，不代表真实调研结果。&lt;/p&gt;
+        &lt;p style=&quot;margin:6px 0 0&quot;&gt;当前观点较分散：支持者略多，但反方与经历向观点合计超过六成，适合继续讨论而不是快速投票定论。&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-filter-row&quot; role=&quot;group&quot; aria-label=&quot;观点筛选&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-peer-filter=&quot;全部&quot; aria-pressed=&quot;true&quot;&gt;全部&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-peer-filter=&quot;支持&quot; aria-pressed=&quot;false&quot;&gt;支持&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-peer-filter=&quot;质疑&quot; aria-pressed=&quot;false&quot;&gt;质疑&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-peer-filter=&quot;经历&quot; aria-pressed=&quot;false&quot;&gt;经历向&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; id=&quot;echo-refresh-peers&quot;&gt;&lt;i data-lucide=&quot;refresh-cw&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 刷新同伴&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;p class=&quot;text-small text-muted&quot; id=&quot;echo-peer-source-note&quot;&gt;当前展示：内测种子观点（模拟）。正式测试后替换为经授权的真实学员观点。&lt;/p&gt;
+      &lt;div class=&quot;echo-peer-list&quot; role=&quot;group&quot; aria-label=&quot;选择要回应的观点&quot;&gt;
+      &lt;button type=&quot;button&quot; class=&quot;echo-peer echo-peer-choice&quot; data-peer-view=&quot;正方&quot; data-peer-filter-type=&quot;支持&quot;&gt;
+        &lt;div class=&quot;echo-peer-head&quot;&gt;&lt;div class=&quot;echo-peer-id&quot;&gt;&lt;span class=&quot;echo-avatar&quot;&gt;S1&lt;/span&gt;&lt;span&gt;内测种子观点 01&lt;/span&gt;&lt;/div&gt;&lt;span class=&quot;viz-badge&quot;&gt;支持&lt;/span&gt;&lt;/div&gt;
+        &lt;p class=&quot;echo-viewpoint&quot;&gt;“AI 能承担检索和重复劳动，让人把更多精力留给判断、创造与表达。”&lt;/p&gt;
+        &lt;p class=&quot;echo-evidence&quot;&gt;理由：工具节省时间后，学习者可以比较更多材料和反例。&lt;/p&gt;
+      &lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;echo-peer echo-peer-choice is-selected&quot; data-peer-view=&quot;反方&quot; data-peer-filter-type=&quot;质疑&quot;&gt;
+        &lt;div class=&quot;echo-peer-head&quot;&gt;
+          &lt;div class=&quot;echo-peer-id&quot;&gt;&lt;span class=&quot;echo-avatar&quot;&gt;S2&lt;/span&gt;&lt;span&gt;内测种子观点 02&lt;/span&gt;&lt;/div&gt;
+          &lt;span class=&quot;viz-badge&quot;&gt;质疑&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;echo-viewpoint&quot;&gt;“AI 的便利确实会削弱独立思考，因为大多数人不会主动选择更困难的思考方式。”&lt;/p&gt;
+        &lt;p class=&quot;echo-evidence&quot;&gt;他的理由：工具会改变习惯；当快速答案成为默认选项，长期训练判断力的机会会减少。&lt;/p&gt;
+      &lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;echo-peer echo-peer-choice&quot; data-peer-view=&quot;其它&quot; data-peer-filter-type=&quot;经历&quot;&gt;
+        &lt;div class=&quot;echo-peer-head&quot;&gt;&lt;div class=&quot;echo-peer-id&quot;&gt;&lt;span class=&quot;echo-avatar&quot;&gt;S3&lt;/span&gt;&lt;span&gt;内测种子观点 03&lt;/span&gt;&lt;/div&gt;&lt;span class=&quot;viz-badge&quot;&gt;经历向&lt;/span&gt;&lt;/div&gt;
+        &lt;p class=&quot;echo-viewpoint&quot;&gt;“我用 AI 做头脑风暴时更有想法，但让它直接写作业后，我反而讲不清自己的选择。”&lt;/p&gt;
+        &lt;p class=&quot;echo-evidence&quot;&gt;理由：同一工具在不同任务阶段产生了相反效果。&lt;/p&gt;
+      &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-field&quot; style=&quot;margin-top:16px&quot;&gt;
+        &lt;label class=&quot;form-label&quot; for=&quot;echo-response-input&quot; id=&quot;echo-response-label&quot;&gt;我选择回应：反方观点&lt;/label&gt;
+        &lt;textarea class=&quot;form-control&quot; id=&quot;echo-response-input&quot;&gt;我同意便利会改变习惯，但问题不只是工具本身。学校可以要求学生先提交自己的判断和证据，再使用 AI 找反例，这样 AI 也可能成为思考训练的一部分。&lt;/textarea&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-next&gt;提交回应并总结&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;echo-screen&quot; data-screen=&quot;5&quot;&gt;
+      &lt;p class=&quot;echo-kicker&quot;&gt;AI 讨论总结&lt;/p&gt;
+      &lt;h2&gt;我们没有得出标准答案，但问题变得更清楚了&lt;/h2&gt;
+      &lt;div class=&quot;echo-ai-note&quot;&gt;
+        &lt;i data-lucide=&quot;sparkles&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;&lt;strong&gt;AI 模拟结果&lt;/strong&gt;&lt;br&gt;只整理双方真实表达，不判断谁对谁错。&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;ul class=&quot;echo-summary-list&quot;&gt;
+        &lt;li&gt;
+          &lt;span class=&quot;echo-summary-icon&quot;&gt;&lt;i data-lucide=&quot;handshake&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+          &lt;div&gt;&lt;strong&gt;共识&lt;/strong&gt;&lt;p&gt;AI 的使用方式会影响人的思考习惯，不能只关注效率。&lt;/p&gt;&lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;span class=&quot;echo-summary-icon&quot;&gt;&lt;i data-lucide=&quot;split&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+          &lt;div&gt;&lt;strong&gt;分歧&lt;/strong&gt;&lt;p id=&quot;echo-summary-disagreement&quot;&gt;一方认为风险主要来自错误的使用顺序，另一方认为便利本身就会改变多数人的行为。&lt;/p&gt;&lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;span class=&quot;echo-summary-icon&quot;&gt;&lt;i data-lucide=&quot;search-check&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+          &lt;div&gt;&lt;strong&gt;证据差异&lt;/strong&gt;&lt;p id=&quot;echo-summary-evidence&quot;&gt;你使用课程作业经历作为证据；对方使用工具长期塑造习惯的判断作为证据。&lt;/p&gt;&lt;/div&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;span class=&quot;echo-summary-icon&quot;&gt;&lt;i data-lucide=&quot;circle-help&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+          &lt;div&gt;&lt;strong&gt;新问题&lt;/strong&gt;&lt;p&gt;什么样的学习流程，能够证明学生先进行了独立判断，再借助 AI 扩展思路？&lt;/p&gt;&lt;/div&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; data-next&gt;保存到思辨空间&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;section class=&quot;echo-screen&quot; data-screen=&quot;6&quot;&gt;
+      &lt;p class=&quot;echo-kicker&quot;&gt;我的思辨空间&lt;/p&gt;
+      &lt;h2&gt;一次讨论，成为可以回看的成长证据&lt;/h2&gt;
+      &lt;p class=&quot;echo-section-label&quot;&gt;成长概览 · 原型模拟数据&lt;/p&gt;
+      &lt;div class=&quot;echo-stat-grid&quot;&gt;
+        &lt;div class=&quot;echo-stat-item&quot;&gt;&lt;strong&gt;8 次&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;累计完成讨论&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-stat-item&quot;&gt;&lt;strong&gt;质疑 · 5 次&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;最常用视角&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-stat-item&quot;&gt;&lt;strong&gt;3 次&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;英文表达挑战&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-stat-item&quot;&gt;&lt;strong&gt;+12%&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;本月观点完整度&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;article class=&quot;echo-history&quot;&gt;
+        &lt;div class=&quot;echo-history-top&quot;&gt;
+          &lt;div&gt;&lt;strong&gt;AI 与独立思考&lt;/strong&gt;&lt;div class=&quot;text-small text-muted&quot;&gt;今天 · 已完成 1 次回应&lt;/div&gt;&lt;/div&gt;
+          &lt;span class=&quot;viz-badge&quot;&gt;已保存&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;p id=&quot;echo-history-view&quot;&gt;AI 本身不会取消思考，错误的使用顺序才会。&lt;/p&gt;
+        &lt;div class=&quot;text-small text-muted&quot;&gt;视角：&lt;span id=&quot;echo-history-perspective&quot;&gt;质疑&lt;/span&gt; · 对话默认仅本人可见&lt;/div&gt;
+      &lt;/article&gt;
+
+      &lt;p class=&quot;echo-section-label&quot;&gt;专属思辨画像 · 当前仅 1 个样本&lt;/p&gt;
+      &lt;div class=&quot;card echo-personal-message&quot;&gt;
+        &lt;strong&gt;&lt;i data-lucide=&quot;scan-text&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 你的本次表达倾向&lt;/strong&gt;
+        &lt;p id=&quot;echo-personal-analysis&quot;&gt;你更倾向先进行理性拆解，再用个人经验校准判断。你没有简单把问题归因于 AI，而是区分了工具和使用方式；回应不同意见时，你选择部分认同并提出改进规则。下一次可以补充一条外部事实或数据，让个人经历形成更有普适性的论证。&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;echo-profile&quot; aria-label=&quot;基于本次文本的表达倾向刻度&quot;&gt;
+        &lt;div class=&quot;echo-axis-row&quot;&gt;
+          &lt;div class=&quot;echo-axis-head&quot;&gt;&lt;strong&gt;判断方式&lt;/strong&gt;&lt;span class=&quot;echo-axis-value&quot; id=&quot;echo-rational-value&quot;&gt;偏理性推演&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-track&quot;&gt;&lt;span class=&quot;echo-axis-marker&quot; id=&quot;echo-rational-marker&quot; style=&quot;left:68%&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-labels&quot;&gt;&lt;span&gt;感性体验&lt;/span&gt;&lt;span&gt;理性推演&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-axis-row&quot;&gt;
+          &lt;div class=&quot;echo-axis-head&quot;&gt;&lt;strong&gt;观点依据&lt;/strong&gt;&lt;span class=&quot;echo-axis-value&quot; id=&quot;echo-evidence-value&quot;&gt;经验与证据并用&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-track&quot;&gt;&lt;span class=&quot;echo-axis-marker&quot; id=&quot;echo-evidence-marker&quot; style=&quot;left:62%&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-labels&quot;&gt;&lt;span&gt;直觉判断&lt;/span&gt;&lt;span&gt;证据推理&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-axis-row&quot;&gt;
+          &lt;div class=&quot;echo-axis-head&quot;&gt;&lt;strong&gt;讨论姿态&lt;/strong&gt;&lt;span class=&quot;echo-axis-value&quot; id=&quot;echo-open-value&quot;&gt;愿意修正观点&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-track&quot;&gt;&lt;span class=&quot;echo-axis-marker&quot; id=&quot;echo-open-marker&quot; style=&quot;left:74%&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-labels&quot;&gt;&lt;span&gt;快速定论&lt;/span&gt;&lt;span&gt;开放修正&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-axis-row&quot;&gt;
+          &lt;div class=&quot;echo-axis-head&quot;&gt;&lt;strong&gt;表达主动性&lt;/strong&gt;&lt;span class=&quot;echo-axis-value&quot; id=&quot;echo-active-value&quot;&gt;会主动发起&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-track&quot;&gt;&lt;span class=&quot;echo-axis-marker&quot; id=&quot;echo-active-marker&quot; style=&quot;left:61%&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;echo-axis-labels&quot;&gt;&lt;span&gt;偏被动回应&lt;/span&gt;&lt;span&gt;主动发起讨论&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;p class=&quot;echo-section-label&quot;&gt;本次判断来自这些表达证据&lt;/p&gt;
+      &lt;div class=&quot;echo-evidence-row&quot; aria-label=&quot;画像分析证据&quot;&gt;
+        &lt;span class=&quot;viz-badge&quot;&gt;区分“工具”与“使用顺序”&lt;/span&gt;
+        &lt;span class=&quot;viz-badge&quot;&gt;使用课程作业经历&lt;/span&gt;
+        &lt;span class=&quot;viz-badge&quot;&gt;部分认同不同观点&lt;/span&gt;
+        &lt;span class=&quot;viz-badge&quot;&gt;提出可执行规则&lt;/span&gt;
+        &lt;span class=&quot;viz-badge&quot;&gt;示例行为：本月主动发起 3 次&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;echo-feedback&quot;&gt;
+        &lt;strong&gt;这个分析像你吗？&lt;/strong&gt;
+        &lt;div class=&quot;viz-controls&quot; role=&quot;group&quot; aria-label=&quot;画像反馈&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-profile-feedback=&quot;很像我&quot; aria-pressed=&quot;false&quot;&gt;很像我&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-profile-feedback=&quot;部分符合&quot; aria-pressed=&quot;false&quot;&gt;部分符合&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-profile-feedback=&quot;不像我&quot; aria-pressed=&quot;false&quot;&gt;不像我&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;echo-feedback-status&quot; id=&quot;echo-feedback-status&quot;&gt;你的反馈会帮助后续分析更贴近你。&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;p class=&quot;text-small text-muted&quot; style=&quot;margin-top:12px&quot;&gt;这些结果只描述本次文本中的表达倾向，不等于稳定人格、MBTI 或心理测评。随着主题和样本增加，用户可查看变化、纠正结论或删除画像。&lt;/p&gt;
+
+      &lt;p class=&quot;echo-section-label&quot;&gt;成长激励&lt;/p&gt;
+      &lt;div class=&quot;echo-badge-list&quot;&gt;
+        &lt;div class=&quot;echo-badge-row&quot;&gt;&lt;i data-lucide=&quot;badge&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span&gt;&lt;strong&gt;质疑思考者&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;已使用质疑视角 5 次&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;已获得&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-badge-row&quot;&gt;&lt;i data-lucide=&quot;messages-square&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span&gt;&lt;strong&gt;多元沟通者&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;回应不同立场 7 / 10 次&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;70%&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-badge-row&quot;&gt;&lt;i data-lucide=&quot;languages&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span&gt;&lt;strong&gt;英文挑战者&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;完成英文表达 3 / 5 次&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;60%&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;details class=&quot;echo-export&quot;&gt;
+        &lt;summary&gt;导出雅思 / 托福口语素材包&lt;/summary&gt;
+        &lt;p style=&quot;margin-top:10px&quot;&gt;把已确认的立场、理由、个人经历和反方回应整理成可复习素材。&lt;/p&gt;
+        &lt;div class=&quot;echo-actions&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-export-free&quot;&gt;&lt;i data-lucide=&quot;download&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 免费导出纯文本&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-show-member&quot;&gt;查看会员版内容&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;echo-extra-angle&quot; id=&quot;echo-member-preview&quot; hidden&gt;&lt;strong&gt;会员版规划&lt;/strong&gt;&lt;p style=&quot;margin:5px 0 0&quot;&gt;结构化素材、AI 润色建议和外教点评。当前仅展示产品规划，不产生购买行为。&lt;/p&gt;&lt;/div&gt;
+      &lt;/details&gt;
+
+      &lt;p class=&quot;echo-section-label&quot;&gt;这次对话谁可以看？&lt;/p&gt;
+      &lt;div class=&quot;echo-share-group&quot; role=&quot;radiogroup&quot; aria-label=&quot;分享范围&quot;&gt;
+        &lt;label class=&quot;echo-share-option&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;echo-share&quot; value=&quot;仅自己可见&quot; checked&gt;
+          &lt;span&gt;&lt;strong&gt;仅自己可见&lt;/strong&gt;完整对话、总结与画像只有自己可以查看。&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;label class=&quot;echo-share-option&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;echo-share&quot; value=&quot;平台匿名可见&quot;&gt;
+          &lt;span&gt;&lt;strong&gt;平台匿名可见&lt;/strong&gt;仅分享选择的观点卡，不显示姓名、学校和原始语音。&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;label class=&quot;echo-share-option&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;echo-share&quot; value=&quot;身份公开可见&quot;&gt;
+          &lt;span&gt;&lt;strong&gt;身份公开可见&lt;/strong&gt;显示昵称，但观点、总结和画像仍需分别授权。&lt;/span&gt;
+        &lt;/label&gt;
+      &lt;/div&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; id=&quot;echo-save-btn&quot;&gt;保存本次设置&lt;/button&gt;
+      &lt;div class=&quot;echo-toast&quot; id=&quot;echo-toast&quot; role=&quot;status&quot;&gt;已保存。当前分享范围：仅自己可见。&lt;/div&gt;
+      &lt;div class=&quot;echo-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回总结&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-restart-btn&quot;&gt;&lt;i data-lucide=&quot;rotate-ccw&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 重新体验&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/main&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      const root = document.getElementById(&#x27;ted-echo-optimized-prototype&#x27;);
+      if (!root) return;
+
+      const screens = Array.from(root.querySelectorAll(&#x27;.echo-screen&#x27;));
+      const progressFill = root.querySelector(&#x27;#echo-progress-fill&#x27;);
+      const stepLabel = root.querySelector(&#x27;#echo-step-label&#x27;);
+      const talkInput = root.querySelector(&#x27;#echo-talk-input&#x27;);
+      const charCount = root.querySelector(&#x27;#echo-char-count&#x27;);
+      const selectedPrompt = root.querySelector(&#x27;#echo-selected-prompt&#x27;);
+      const selectedDetailTitle = root.querySelector(&#x27;#echo-selected-detail-title&#x27;);
+      const selectedDetailText = root.querySelector(&#x27;#echo-selected-detail-text&#x27;);
+      const textPanel = root.querySelector(&#x27;#echo-text-panel&#x27;);
+      const voicePanel = root.querySelector(&#x27;#echo-voice-panel&#x27;);
+      const predictionCard = root.querySelector(&#x27;#echo-prediction-card&#x27;);
+      const predictionStance = root.querySelector(&#x27;#echo-prediction-stance&#x27;);
+      const predictionReason = root.querySelector(&#x27;#echo-prediction-reason&#x27;);
+      const predictionConfidence = root.querySelector(&#x27;#echo-prediction-confidence&#x27;);
+      const voiceResult = root.querySelector(&#x27;#echo-voice-result&#x27;);
+      const voiceStatusText = root.querySelector(&#x27;#echo-voice-status-text&#x27;);
+      const responseInput = root.querySelector(&#x27;#echo-response-input&#x27;);
+      const responseLabel = root.querySelector(&#x27;#echo-response-label&#x27;);
+      const summaryDisagreement = root.querySelector(&#x27;#echo-summary-disagreement&#x27;);
+      const summaryEvidence = root.querySelector(&#x27;#echo-summary-evidence&#x27;);
+      const historyPerspective = root.querySelector(&#x27;#echo-history-perspective&#x27;);
+      const historyView = root.querySelector(&#x27;#echo-history-view&#x27;);
+      const toast = root.querySelector(&#x27;#echo-toast&#x27;);
+      const rationalMarker = root.querySelector(&#x27;#echo-rational-marker&#x27;);
+      const evidenceMarker = root.querySelector(&#x27;#echo-evidence-marker&#x27;);
+      const openMarker = root.querySelector(&#x27;#echo-open-marker&#x27;);
+      const activeMarker = root.querySelector(&#x27;#echo-active-marker&#x27;);
+      const rationalValue = root.querySelector(&#x27;#echo-rational-value&#x27;);
+      const evidenceValue = root.querySelector(&#x27;#echo-evidence-value&#x27;);
+      const openValue = root.querySelector(&#x27;#echo-open-value&#x27;);
+      const activeValue = root.querySelector(&#x27;#echo-active-value&#x27;);
+      const personalAnalysis = root.querySelector(&#x27;#echo-personal-analysis&#x27;);
+      const feedbackStatus = root.querySelector(&#x27;#echo-feedback-status&#x27;);
+      let current = 0;
+      let perspective = &#x27;质疑&#x27;;
+      let profileFeedback = &#x27;&#x27;;
+      let inputMode = &#x27;text&#x27;;
+      let selectedPeer = &#x27;反方&#x27;;
+      let predictionIgnored = false;
+      let aiSummaryDisabled = false;
+      let favorite = false;
+
+      const prompts = {
+        &#x27;支持&#x27;: &#x27;支持视角：AI 是否能把人的精力留给更重要的判断？&#x27;,
+        &#x27;质疑&#x27;: &#x27;质疑视角：AI 越方便，人是否越容易放弃主动判断？&#x27;,
+        &#x27;因果&#x27;: &#x27;因果拆解：思考变化来自工具，还是来自使用规则与评价方式？&#x27;,
+        &#x27;经历&#x27;: &#x27;个人经历：回想一次 AI 真正帮助或妨碍你思考的经历。&#x27;,
+        &#x27;角色&#x27;: &#x27;角色视角：学生、教师和平台会如何定义合理使用？&#x27;,
+        &#x27;未来&#x27;: &#x27;未来情境：AI 成为默认伙伴后，人必须保留哪些能力？&#x27;,
+        &#x27;自由表达&#x27;: &#x27;自由表达：不用参考提示卡，直接写下你自己的判断。&#x27;
+      };
+
+      const promptDetails = {
+        &#x27;支持&#x27;: &#x27;AI 能快速补充信息、发现盲点，可能让人把精力留给更重要的判断。&#x27;,
+        &#x27;质疑&#x27;: &#x27;如果每次都先问 AI，我们会不会逐渐失去独立构建问题和验证答案的耐心？&#x27;,
+        &#x27;因果&#x27;: &#x27;人的思考变化究竟来自 AI 本身，还是学校规则、使用顺序与评价方式？&#x27;,
+        &#x27;经历&#x27;: &#x27;回想一次你用 AI 完成学习任务的经历：它在哪一步帮助或妨碍了你？&#x27;,
+        &#x27;角色&#x27;: &#x27;学生、教师、家长和 AI 平台，会如何定义合理使用与独立完成？&#x27;,
+        &#x27;未来&#x27;: &#x27;五年后，当 AI 成为默认学习伙伴，哪些能力必须由人独立保留？&#x27;,
+        &#x27;自由表达&#x27;: &#x27;不使用任何提示卡，保留你自己的问题结构和表达顺序。&#x27;
+      };
+
+      const peerResponses = {
+        &#x27;正方&#x27;: {
+          response: &#x27;我认可 AI 能节省检索时间，但效率只有在使用者先明确问题时才有意义，否则可能只是更快地接受第一个答案。&#x27;,
+          disagreement: &#x27;双方都认可 AI 可以提升效率，分歧在于效率是否会自然转化为更深入的判断。&#x27;,
+          evidence: &#x27;你使用课程作业经历说明代写风险；对方以检索和比较材料的效率作为依据。&#x27;
+        },
+        &#x27;反方&#x27;: {
+          response: &#x27;我同意便利会改变习惯，但问题不只是工具本身。学校可以要求学生先提交自己的判断和证据，再使用 AI 找反例，这样 AI 也可能成为思考训练的一部分。&#x27;,
+          disagreement: &#x27;一方认为风险主要来自错误的使用顺序，另一方认为便利本身就会改变多数人的行为。&#x27;,
+          evidence: &#x27;你使用课程作业经历作为证据；对方使用工具长期塑造习惯的判断作为证据。&#x27;
+        },
+        &#x27;其它&#x27;: {
+          response: &#x27;我赞同按任务区分规则。还可以要求用户说明 AI 在哪一步参与，让“使用 AI”从隐蔽行为变成可以讨论和评价的过程。&#x27;,
+          disagreement: &#x27;双方都反对简单禁止或放任 AI，差异在于你更强调使用顺序，对方更强调按任务划分规则。&#x27;,
+          evidence: &#x27;你以个人作业经历为证据；对方通过头脑风暴与能力考核的任务差异进行论证。&#x27;
+        }
+      };
+
+      function saveState() {
+        const state = { current, perspective, talk: talkInput.value, profileFeedback, inputMode, selectedPeer, aiSummaryDisabled, favorite };
+        try { localStorage.setItem(&#x27;tedEchoPrototype&#x27;, JSON.stringify(state)); } catch (error) { /* local preview may restrict storage */ }
+      }
+
+      function countSignals(text, words) {
+        return words.reduce((total, word) =&gt; total + (text.includes(word) ? 1 : 0), 0);
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function updateProfile() {
+        const text = `${talkInput.value} ${root.querySelector(&#x27;#echo-response-input&#x27;).value}`;
+        const rationalSignals = countSignals(text, [&#x27;因为&#x27;, &#x27;风险&#x27;, &#x27;判断&#x27;, &#x27;规则&#x27;, &#x27;验证&#x27;, &#x27;解释&#x27;, &#x27;如果&#x27;, &#x27;但&#x27;]);
+        const emotionalSignals = countSignals(text, [&#x27;感觉&#x27;, &#x27;担心&#x27;, &#x27;喜欢&#x27;, &#x27;害怕&#x27;, &#x27;触动&#x27;, &#x27;共鸣&#x27;, &#x27;失望&#x27;]);
+        const evidenceSignals = countSignals(text, [&#x27;例如&#x27;, &#x27;比如&#x27;, &#x27;经历&#x27;, &#x27;作业&#x27;, &#x27;事实&#x27;, &#x27;数据&#x27;, &#x27;证据&#x27;]);
+        const intuitionSignals = countSignals(text, [&#x27;我觉得&#x27;, &#x27;直觉&#x27;, &#x27;好像&#x27;, &#x27;可能&#x27;]);
+        const openSignals = countSignals(text, [&#x27;同意&#x27;, &#x27;但是&#x27;, &#x27;但&#x27;, &#x27;同时&#x27;, &#x27;反例&#x27;, &#x27;部分&#x27;, &#x27;可以&#x27;]);
+        const certaintySignals = countSignals(text, [&#x27;一定&#x27;, &#x27;完全&#x27;, &#x27;必然&#x27;, &#x27;肯定&#x27;]);
+
+        const rationalScore = clamp(52 + rationalSignals * 4 - emotionalSignals * 5, 28, 84);
+        const evidenceScore = clamp(48 + evidenceSignals * 6 - intuitionSignals * 3, 25, 82);
+        const openScore = clamp(50 + openSignals * 5 - certaintySignals * 7, 25, 86);
+        const activeScore = 63;
+
+        rationalMarker.style.left = `${rationalScore}%`;
+        evidenceMarker.style.left = `${evidenceScore}%`;
+        openMarker.style.left = `${openScore}%`;
+        activeMarker.style.left = `${activeScore}%`;
+        rationalValue.textContent = rationalScore &gt;= 62 ? &#x27;偏理性推演&#x27; : rationalScore &lt;= 42 ? &#x27;偏感性体验&#x27; : &#x27;理性与感受并用&#x27;;
+        evidenceValue.textContent = evidenceScore &gt;= 62 ? &#x27;偏证据推理&#x27; : evidenceScore &lt;= 42 ? &#x27;偏直觉判断&#x27; : &#x27;经验与证据并用&#x27;;
+        openValue.textContent = openScore &gt;= 62 ? &#x27;愿意修正观点&#x27; : openScore &lt;= 42 ? &#x27;倾向快速定论&#x27; : &#x27;立场相对平衡&#x27;;
+        activeValue.textContent = activeScore &gt;= 62 ? &#x27;会主动发起&#x27; : activeScore &lt;= 42 ? &#x27;更偏被动回应&#x27; : &#x27;主动性正在形成&#x27;;
+
+        const opening = rationalScore &gt;= 62
+          ? &#x27;你更倾向先进行理性拆解，再判断工具与使用方式分别承担什么责任。&#x27;
+          : rationalScore &lt;= 42
+            ? &#x27;你更习惯从个人感受和真实体验进入问题，再逐步形成判断。&#x27;
+            : &#x27;你会在个人感受与逻辑拆解之间来回校准，而不是只依赖一种判断方式。&#x27;;
+        const basis = evidenceScore &gt;= 62
+          ? &#x27;你主动使用了课程作业经历作为依据，使观点不只停留在态度层面。&#x27;
+          : &#x27;你已经表达了明确倾向，但还可以增加具体经历、事实或数据作为支撑。&#x27;;
+        const dialogue = openScore &gt;= 62
+          ? &#x27;回应不同意见时，你选择部分认同并提出改进规则，表现出较强的观点修正意愿。&#x27;
+          : &#x27;回应不同意见时，你较快守住了原立场；下一次可以先准确复述对方理由，再决定是否调整。&#x27;;
+        personalAnalysis.textContent = `${opening}${basis}${dialogue}下一次可以补充一条外部事实或反例，检验个人经验是否具有普遍性。`;
+      }
+
+      function showScreen(index) {
+        current = Math.max(0, Math.min(index, screens.length - 1));
+        screens.forEach((screen, i) =&gt; screen.classList.toggle(&#x27;is-active&#x27;, i === current));
+        progressFill.style.width = `${((current + 1) / screens.length) * 100}%`;
+        stepLabel.textContent = `${current + 1} / ${screens.length}`;
+        historyPerspective.textContent = perspective;
+        if (talkInput.value.trim()) {
+          const shortView = talkInput.value.trim().split(/[。！？]/)[0];
+          historyView.textContent = `${shortView}。`;
+        }
+        if (screens[current].querySelector(&#x27;#echo-personal-analysis&#x27;)) updateProfile();
+        saveState();
+        root.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;start&#x27; });
+      }
+
+      root.querySelectorAll(&#x27;[data-next]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; showScreen(current + 1));
+      });
+
+      root.querySelectorAll(&#x27;[data-back]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; showScreen(current - 1));
+      });
+
+      root.querySelectorAll(&#x27;[data-perspective]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; {
+          perspective = button.dataset.perspective;
+          root.querySelectorAll(&#x27;[data-perspective]&#x27;).forEach((item) =&gt; item.classList.toggle(&#x27;is-selected&#x27;, item === button));
+          selectedPrompt.textContent = prompts[perspective];
+          selectedDetailTitle.textContent = `${perspective}视角`;
+          selectedDetailText.textContent = promptDetails[perspective];
+          historyPerspective.textContent = perspective;
+          saveState();
+        });
+      });
+
+      root.querySelector(&#x27;#echo-random-prompt&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        const cards = Array.from(root.querySelectorAll(&#x27;[data-perspective]&#x27;));
+        const currentIndex = cards.findIndex((item) =&gt; item.dataset.perspective === perspective);
+        const nextCard = cards[(currentIndex + 2 + Math.floor(Math.random() * (cards.length - 1))) % cards.length];
+        nextCard.click();
+      });
+
+      root.querySelector(&#x27;#echo-skip-prompt&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        perspective = &#x27;自由表达&#x27;;
+        root.querySelectorAll(&#x27;[data-perspective]&#x27;).forEach((item) =&gt; item.classList.remove(&#x27;is-selected&#x27;));
+        selectedPrompt.textContent = prompts[perspective];
+        selectedDetailTitle.textContent = &#x27;自由表达&#x27;;
+        selectedDetailText.textContent = promptDetails[perspective];
+        historyPerspective.textContent = perspective;
+        saveState();
+        showScreen(current + 1);
+      });
+
+      function setInputMode(mode) {
+        inputMode = mode;
+        textPanel.hidden = mode !== &#x27;text&#x27;;
+        voicePanel.hidden = mode !== &#x27;voice&#x27;;
+        root.querySelectorAll(&#x27;[data-input-mode]&#x27;).forEach((button) =&gt; button.setAttribute(&#x27;aria-pressed&#x27;, String(button.dataset.inputMode === mode)));
+        if (mode === &#x27;voice&#x27;) predictionCard.hidden = true;
+        else updatePrediction();
+        saveState();
+      }
+
+      root.querySelectorAll(&#x27;[data-input-mode]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; setInputMode(button.dataset.inputMode));
+      });
+
+      function updatePrediction() {
+        const text = talkInput.value.trim();
+        if (inputMode !== &#x27;text&#x27; || predictionIgnored || aiSummaryDisabled || text.length &lt; 12) {
+          predictionCard.hidden = true;
+          return;
+        }
+        predictionCard.hidden = false;
+        if ((text.includes(&#x27;不会&#x27;) || text.includes(&#x27;不只是&#x27;)) &amp;&amp; (text.includes(&#x27;风险&#x27;) || text.includes(&#x27;顺序&#x27;) || text.includes(&#x27;方式&#x27;))) {
+          predictionStance.textContent = &#x27;你的立场是：AI 不会直接削弱思考，关键在于使用顺序与学习规则。&#x27;;
+          predictionReason.textContent = &#x27;核心理由：先形成判断再找 AI 验证，比让 AI 直接代写更能保留主动性。&#x27;;
+        } else if (text.includes(&#x27;依赖&#x27;) || text.includes(&#x27;削弱&#x27;) || text.includes(&#x27;失去&#x27;)) {
+          predictionStance.textContent = &#x27;你的立场是：AI 的便利会逐渐削弱人的主动判断。&#x27;;
+          predictionReason.textContent = &#x27;核心理由：快速答案会改变学习习惯，使人减少独立构建问题和验证证据的机会。&#x27;;
+        } else {
+          predictionStance.textContent = &#x27;你的立场是：AI 可以帮助思考，但需要清晰的使用边界。&#x27;;
+          predictionReason.textContent = &#x27;核心理由：AI 适合扩展材料和反例，不应代替用户决定立场。&#x27;;
+        }
+        predictionConfidence.textContent = &#x27;AI 总结 · 模拟&#x27;;
+      }
+
+      function updateCount() { charCount.textContent = talkInput.value.length; }
+      talkInput.addEventListener(&#x27;input&#x27;, () =&gt; { updateCount(); updatePrediction(); saveState(); });
+      updateCount();
+
+      root.querySelector(&#x27;#echo-accept-prediction&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        predictionConfidence.textContent = &#x27;用户已确认&#x27;;
+        root.querySelector(&#x27;#echo-accept-prediction&#x27;).disabled = true;
+      });
+
+      root.querySelector(&#x27;#echo-ignore-prediction&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        predictionIgnored = true;
+        predictionCard.hidden = true;
+      });
+
+      root.querySelector(&#x27;#echo-disable-prediction&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        aiSummaryDisabled = true;
+        predictionCard.hidden = true;
+        saveState();
+      });
+
+      root.querySelector(&#x27;#echo-add-angle&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        root.querySelector(&#x27;#echo-extra-angle&#x27;).hidden = false;
+      });
+
+      root.querySelector(&#x27;#echo-voice-btn&#x27;).addEventListener(&#x27;click&#x27;, (event) =&gt; {
+        event.currentTarget.innerHTML = &#x27;&lt;i data-lucide=&quot;check&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 模拟录音已完成&#x27;;
+        event.currentTarget.disabled = true;
+        voiceStatusText.textContent = &#x27;已完成语音分析。观点预测卡在语音模式下保持关闭。&#x27;;
+        voiceResult.hidden = false;
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+      });
+
+      root.querySelectorAll(&#x27;[data-peer-view]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; {
+          selectedPeer = button.dataset.peerView;
+          root.querySelectorAll(&#x27;[data-peer-view]&#x27;).forEach((item) =&gt; item.classList.toggle(&#x27;is-selected&#x27;, item === button));
+          responseLabel.textContent = `我选择回应：${selectedPeer}观点`;
+          responseInput.value = peerResponses[selectedPeer].response;
+          summaryDisagreement.textContent = peerResponses[selectedPeer].disagreement;
+          summaryEvidence.textContent = peerResponses[selectedPeer].evidence;
+          saveState();
+        });
+      });
+
+      root.querySelectorAll(&#x27;[data-peer-filter]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; {
+          const filter = button.dataset.peerFilter;
+          root.querySelectorAll(&#x27;[data-peer-filter]&#x27;).forEach((item) =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item === button)));
+          root.querySelectorAll(&#x27;[data-peer-view]&#x27;).forEach((item) =&gt; {
+            item.hidden = filter !== &#x27;全部&#x27; &amp;&amp; item.dataset.peerFilterType !== filter;
+          });
+        });
+      });
+
+      root.querySelector(&#x27;#echo-refresh-peers&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        const list = root.querySelector(&#x27;[aria-label=&quot;选择要回应的观点&quot;]&#x27;);
+        const peers = Array.from(list.querySelectorAll(&#x27;[data-peer-view]&#x27;));
+        if (peers.length) list.appendChild(peers[0]);
+        root.querySelector(&#x27;#echo-peer-source-note&#x27;).textContent = &#x27;已刷新一组内测种子观点（模拟）。正式测试后替换为经授权的真实学员观点。&#x27;;
+      });
+
+      root.querySelectorAll(&#x27;[data-topic]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; {
+          root.querySelectorAll(&#x27;[data-topic]&#x27;).forEach((item) =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item === button)));
+        });
+      });
+
+      root.querySelector(&#x27;#echo-favorite-btn&#x27;).addEventListener(&#x27;click&#x27;, (event) =&gt; {
+        favorite = !favorite;
+        event.currentTarget.setAttribute(&#x27;aria-pressed&#x27;, String(favorite));
+        event.currentTarget.innerHTML = favorite ? &#x27;&lt;i data-lucide=&quot;bookmark-check&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 已收藏&#x27; : &#x27;&lt;i data-lucide=&quot;bookmark&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 收藏&#x27;;
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+        saveState();
+      });
+
+      root.querySelector(&#x27;#echo-save-btn&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        const selected = root.querySelector(&#x27;input[name=&quot;echo-share&quot;]:checked&#x27;);
+        toast.textContent = `已保存。当前分享范围：${selected ? selected.value : &#x27;仅自己可见&#x27;}。`;
+        toast.classList.add(&#x27;is-visible&#x27;);
+        saveState();
+      });
+
+      root.querySelectorAll(&#x27;[data-profile-feedback]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; {
+          profileFeedback = button.dataset.profileFeedback;
+          root.querySelectorAll(&#x27;[data-profile-feedback]&#x27;).forEach((item) =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item === button)));
+          feedbackStatus.textContent = profileFeedback === &#x27;不像我&#x27;
+            ? &#x27;已记录：本次判断不像你。后续分析将降低这段样本的权重。&#x27;
+            : `已记录：${profileFeedback}。后续会结合更多主题持续修正。`;
+          saveState();
+        });
+      });
+
+      root.querySelector(&#x27;#echo-restart-btn&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        toast.classList.remove(&#x27;is-visible&#x27;);
+        predictionIgnored = false;
+        showScreen(0);
+      });
+
+      root.querySelector(&#x27;#echo-show-member&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        root.querySelector(&#x27;#echo-member-preview&#x27;).hidden = false;
+      });
+
+      root.querySelector(&#x27;#echo-export-free&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+        const material = `TED Echo 口语素材包\n主题：AI 与独立思考\n立场：AI 本身不会取消思考，错误的使用顺序才会。\n理由：把得到答案当作完成思考，会跳过自主判断和验证。\n个人经历：先让 AI 完成课程作业后，自己难以解释内容选择。\n反方观点：便利会改变习惯，长期减少独立训练机会。\n我的回应：学校可要求学生先提交判断和证据，再用 AI 找反例。`;
+        const blob = new Blob([material], { type: &#x27;text/plain;charset=utf-8&#x27; });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement(&#x27;a&#x27;);
+        link.href = url;
+        link.download = &#x27;TED_Echo_口语素材包.txt&#x27;;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(&#x27;tedEchoPrototype&#x27;) || &#x27;null&#x27;);
+        if (saved &amp;&amp; typeof saved === &#x27;object&#x27;) {
+          perspective = saved.perspective || perspective;
+          profileFeedback = saved.profileFeedback || &#x27;&#x27;;
+          inputMode = saved.inputMode || inputMode;
+          selectedPeer = saved.selectedPeer || selectedPeer;
+          aiSummaryDisabled = Boolean(saved.aiSummaryDisabled);
+          favorite = Boolean(saved.favorite);
+          if (saved.talk) talkInput.value = saved.talk;
+          root.querySelectorAll(&#x27;[data-perspective]&#x27;).forEach((item) =&gt; item.classList.toggle(&#x27;is-selected&#x27;, item.dataset.perspective === perspective));
+          selectedPrompt.textContent = prompts[perspective];
+          selectedDetailTitle.textContent = perspective === &#x27;自由表达&#x27; ? &#x27;自由表达&#x27; : `${perspective}视角`;
+          selectedDetailText.textContent = promptDetails[perspective];
+          if (profileFeedback) {
+            root.querySelectorAll(&#x27;[data-profile-feedback]&#x27;).forEach((item) =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item.dataset.profileFeedback === profileFeedback)));
+            feedbackStatus.textContent = `已记录：${profileFeedback}。后续会结合更多主题持续修正。`;
+          }
+        }
+      } catch (error) { /* ignore malformed local state */ }
+
+      updateCount();
+      updatePrediction();
+      setInputMode(inputMode);
+      root.querySelector(&#x27;#echo-favorite-btn&#x27;).setAttribute(&#x27;aria-pressed&#x27;, String(favorite));
+      if (favorite) root.querySelector(&#x27;#echo-favorite-btn&#x27;).innerHTML = &#x27;&lt;i data-lucide=&quot;bookmark-check&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 已收藏&#x27;;
+      root.querySelectorAll(&#x27;[data-peer-view]&#x27;).forEach((item) =&gt; item.classList.toggle(&#x27;is-selected&#x27;, item.dataset.peerView === selectedPeer));
+      if (peerResponses[selectedPeer]) {
+        responseLabel.textContent = `我选择回应：${selectedPeer}观点`;
+        responseInput.value = peerResponses[selectedPeer].response;
+        summaryDisagreement.textContent = peerResponses[selectedPeer].disagreement;
+        summaryEvidence.textContent = peerResponses[selectedPeer].evidence;
+      }
+      showScreen(0);
+      if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16 } });
+    })();
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+
+
+
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>
