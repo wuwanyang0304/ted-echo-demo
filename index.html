@@ -6,7 +6,7 @@
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>TED Echo 原型 Demo 整合优化版</title>
-<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{height:100%;margin:0;overflow:hidden}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100dvh - 2rem);margin:0 auto;border:0}</style>
 </head>
 <body>
 <iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="TED Echo 原型 Demo 整合优化版" srcdoc="&lt;!doctype html&gt;
@@ -810,7 +810,7 @@ svg {
   color: var(--destructive);
 }
 
-html&gt;body{padding:0}&lt;/style&gt;
+html,body{height:100%;overflow:hidden}html&gt;body{padding:0}&lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 ﻿&lt;div id=&quot;ted-echo-optimized-prototype&quot;&gt;
@@ -819,16 +819,23 @@ html&gt;body{padding:0}&lt;/style&gt;
       --echo-soft: color-mix(in srgb, var(--viz-series-1) 12%, transparent);
       --echo-soft-2: color-mix(in srgb, var(--viz-series-2) 12%, transparent);
       --echo-soft-3: color-mix(in srgb, var(--viz-series-3) 12%, transparent);
+      box-sizing: border-box;
       color: var(--foreground);
       width: 100%;
-      padding: 16px 0 28px;
+      height: 100dvh;
+      padding: 16px 0 12px;
+      overflow: hidden;
     }
 
     #ted-echo-optimized-prototype * { box-sizing: border-box; }
 
     #ted-echo-optimized-prototype .echo-stage {
+      display: flex;
+      flex-direction: column;
       width: min(100%, 430px);
+      height: 100%;
       margin: 0 auto;
+      overflow: hidden;
     }
 
     #ted-echo-optimized-prototype .echo-topbar,
@@ -874,6 +881,67 @@ html&gt;body{padding:0}&lt;/style&gt;
       font-size: 12px;
     }
 
+    #ted-echo-optimized-prototype .echo-issue-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 18px 0 4px;
+    }
+
+    #ted-echo-optimized-prototype .echo-issue-item {
+      min-height: clamp(104px, 12dvh, 142px);
+      padding: 12px 10px;
+      border-top: 2px solid var(--primary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-issue-index {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    #ted-echo-optimized-prototype .echo-issue-item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #ted-echo-optimized-prototype .echo-issue-item p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    #ted-echo-optimized-prototype .echo-prestance {
+      margin-top: 18px;
+      padding: 12px 0 14px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #ted-echo-optimized-prototype .echo-prestance-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    #ted-echo-optimized-prototype .echo-prestance-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    #ted-echo-optimized-prototype .echo-prestance-options .btn {
+      min-height: 44px;
+      padding-inline: 8px;
+      white-space: normal;
+    }
+
     #ted-echo-optimized-prototype .echo-progress-row {
       gap: 10px;
       margin-bottom: 18px;
@@ -900,8 +968,35 @@ html&gt;body{padding:0}&lt;/style&gt;
       white-space: nowrap;
     }
 
-    #ted-echo-optimized-prototype .echo-screen { display: none; }
-    #ted-echo-optimized-prototype .echo-screen.is-active { display: block; }
+    #ted-echo-optimized-prototype .echo-screen {
+      display: none;
+      min-height: 0;
+      padding-right: 5px;
+    }
+
+    #ted-echo-optimized-prototype .echo-screen.is-active {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--muted-foreground) transparent;
+    }
+
+    #ted-echo-optimized-prototype .echo-screen.is-active &gt; * { flex-shrink: 0; }
+
+    #ted-echo-optimized-prototype .echo-screen.is-active::-webkit-scrollbar { width: 5px; }
+    #ted-echo-optimized-prototype .echo-screen.is-active::-webkit-scrollbar-thumb {
+      background: var(--muted-foreground);
+      border-radius: 999px;
+    }
+
+    #ted-echo-optimized-prototype .echo-screen &gt; .echo-actions:last-child {
+      margin-top: auto;
+      padding-top: 14px;
+    }
 
     #ted-echo-optimized-prototype h2,
     #ted-echo-optimized-prototype h3,
@@ -922,7 +1017,7 @@ html&gt;body{padding:0}&lt;/style&gt;
 
     #ted-echo-optimized-prototype .echo-talk-visual {
       position: relative;
-      min-height: 210px;
+      min-height: clamp(210px, 25dvh, 300px);
       margin-bottom: 18px;
       padding: 22px;
       overflow: hidden;
@@ -1000,13 +1095,16 @@ html&gt;body{padding:0}&lt;/style&gt;
     #ted-echo-optimized-prototype .echo-choice-list {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: minmax(148px, auto);
       gap: 8px;
     }
 
     #ted-echo-optimized-prototype .echo-choice {
+      display: flex;
+      flex-direction: column;
       width: 100%;
-      min-height: 102px;
-      padding: 11px;
+      min-height: 148px;
+      padding: 13px 12px;
       text-align: left;
       background: transparent;
       color: var(--foreground);
@@ -1032,20 +1130,42 @@ html&gt;body{padding:0}&lt;/style&gt;
     }
 
     #ted-echo-optimized-prototype .echo-choice p {
-      display: none;
+      display: -webkit-box;
+      margin: 0 0 10px;
+      overflow: hidden;
+      color: var(--muted-foreground);
+      font-size: 12px;
+      line-height: 1.45;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    #ted-echo-optimized-prototype .echo-choice.is-selected p {
+      color: color-mix(in srgb, var(--accent-foreground) 74%, transparent);
     }
 
     #ted-echo-optimized-prototype .echo-keywords {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 9px;
+      margin-top: auto;
     }
 
     #ted-echo-optimized-prototype .echo-keywords .viz-badge:nth-child(n+3) { display: none; }
 
     #ted-echo-optimized-prototype .echo-selected-detail {
-      margin-top: 10px;
+      margin-top: 12px;
+      border-left: 3px solid var(--primary);
+      border-radius: 6px;
+    }
+
+    #ted-echo-optimized-prototype .echo-screen[data-screen=&quot;1&quot;] .echo-lead {
+      margin-bottom: 14px;
+    }
+
+    #ted-echo-optimized-prototype .echo-screen[data-screen=&quot;1&quot;] &gt; .echo-actions {
+      margin-top: auto;
+      padding-top: 16px;
     }
 
     #ted-echo-optimized-prototype .echo-topic-tabs,
@@ -1537,6 +1657,22 @@ html&gt;body{padding:0}&lt;/style&gt;
       #ted-echo-optimized-prototype .echo-talk-title { font-size: 24px; }
       #ted-echo-optimized-prototype .echo-voice-score-grid { grid-template-columns: 1fr; }
       #ted-echo-optimized-prototype .echo-profile { grid-template-columns: 1fr; gap: 12px; }
+      #ted-echo-optimized-prototype .echo-choice-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #ted-echo-optimized-prototype .echo-choice { min-height: 142px; }
+    }
+
+    @media (min-height: 900px) {
+      #ted-echo-optimized-prototype .echo-choice-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: minmax(178px, auto);
+      }
+
+      #ted-echo-optimized-prototype .echo-choice { min-height: 178px; }
+      #ted-echo-optimized-prototype .echo-choice p { -webkit-line-clamp: 3; }
+      #ted-echo-optimized-prototype .echo-selected-detail {
+        min-height: 126px;
+        padding: 16px 14px;
+      }
     }
 
     @media (max-width: 350px) {
@@ -1586,6 +1722,19 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/div&gt;
       &lt;p class=&quot;echo-section-label&quot;&gt;观看前，带着一个问题&lt;/p&gt;
       &lt;p class=&quot;echo-prompt&quot;&gt;当 AI 可以快速给出答案时，人还需要慢慢形成自己的判断吗？&lt;/p&gt;
+      &lt;div class=&quot;echo-issue-map&quot; aria-label=&quot;本期议题坐标&quot;&gt;
+        &lt;div class=&quot;echo-issue-item&quot;&gt;&lt;span class=&quot;echo-issue-index&quot;&gt;01 · 个体&lt;/span&gt;&lt;strong&gt;使用习惯&lt;/strong&gt;&lt;p&gt;快速答案会不会改变思考耐心？&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-issue-item&quot;&gt;&lt;span class=&quot;echo-issue-index&quot;&gt;02 · 教育&lt;/span&gt;&lt;strong&gt;评价规则&lt;/strong&gt;&lt;p&gt;怎样证明学生先完成了独立判断？&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-issue-item&quot;&gt;&lt;span class=&quot;echo-issue-index&quot;&gt;03 · 未来&lt;/span&gt;&lt;strong&gt;能力边界&lt;/strong&gt;&lt;p&gt;哪些能力必须由人持续保留？&lt;/p&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;echo-prestance&quot;&gt;
+        &lt;div class=&quot;echo-prestance-head&quot;&gt;&lt;strong&gt;观看前，你更接近哪种判断？&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;初始立场&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;echo-prestance-options&quot; role=&quot;group&quot; aria-label=&quot;观看前立场预判&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-prestance=&quot;削弱思考&quot; aria-pressed=&quot;false&quot;&gt;会削弱思考&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-prestance=&quot;取决于使用方式&quot; aria-pressed=&quot;true&quot;&gt;取决于使用方式&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn&quot; data-prestance=&quot;扩展思考&quot; aria-pressed=&quot;false&quot;&gt;能扩展思考&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
       &lt;div class=&quot;echo-actions&quot;&gt;
         &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; data-next&gt;模拟观看完成，开始表达&lt;/button&gt;
       &lt;/div&gt;
@@ -1831,11 +1980,6 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/details&gt;
 
       &lt;p class=&quot;echo-section-label&quot;&gt;本次思辨画像 · 可解释、可修正&lt;/p&gt;
-      &lt;div class=&quot;card echo-personal-message&quot;&gt;
-        &lt;strong&gt;&lt;i data-lucide=&quot;scan-text&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 你的本次表达倾向&lt;/strong&gt;
-        &lt;p id=&quot;echo-personal-analysis&quot;&gt;你呈现出偏理性推演、经验与证据并用、愿意修正观点的倾向。建议下一次补充一条外部事实或反例。&lt;/p&gt;
-      &lt;/div&gt;
-
       &lt;div class=&quot;echo-profile&quot; aria-label=&quot;基于本次文本的表达倾向刻度&quot;&gt;
         &lt;div class=&quot;echo-axis-row&quot;&gt;
           &lt;div class=&quot;echo-axis-head&quot;&gt;&lt;strong&gt;判断方式&lt;/strong&gt;&lt;span class=&quot;echo-axis-value&quot; id=&quot;echo-rational-value&quot;&gt;偏理性推演&lt;/span&gt;&lt;/div&gt;
@@ -1857,6 +2001,11 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;div class=&quot;echo-axis-track&quot;&gt;&lt;span class=&quot;echo-axis-marker&quot; id=&quot;echo-active-marker&quot; style=&quot;left:61%&quot;&gt;&lt;/span&gt;&lt;/div&gt;
           &lt;div class=&quot;echo-axis-labels&quot;&gt;&lt;span&gt;偏被动回应&lt;/span&gt;&lt;span&gt;主动发起讨论&lt;/span&gt;&lt;/div&gt;
         &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;card echo-personal-message&quot;&gt;
+        &lt;strong&gt;&lt;i data-lucide=&quot;scan-text&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 你的本次表达倾向&lt;/strong&gt;
+        &lt;p id=&quot;echo-personal-analysis&quot;&gt;你呈现出偏理性推演、经验与证据并用、愿意修正观点的倾向。建议下一次补充一条外部事实或反例。&lt;/p&gt;
       &lt;/div&gt;
 
       &lt;details class=&quot;echo-export echo-profile-details&quot;&gt;
@@ -2082,6 +2231,12 @@ html&gt;body{padding:0}&lt;/style&gt;
 
       root.querySelectorAll(&#x27;[data-next]&#x27;).forEach((button) =&gt; {
         button.addEventListener(&#x27;click&#x27;, () =&gt; showScreen(current + 1));
+      });
+
+      root.querySelectorAll(&#x27;[data-prestance]&#x27;).forEach((button) =&gt; {
+        button.addEventListener(&#x27;click&#x27;, () =&gt; {
+          root.querySelectorAll(&#x27;[data-prestance]&#x27;).forEach((item) =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item === button)));
+        });
       });
 
       root.querySelectorAll(&#x27;[data-back]&#x27;).forEach((button) =&gt; {
