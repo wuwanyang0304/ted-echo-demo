@@ -1326,12 +1326,13 @@ html&gt;body{padding:0}&lt;/style&gt;
 
     #ted-echo-optimized-prototype .echo-profile {
       display: grid;
-      gap: 16px;
-      margin: 14px 0 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 22px;
+      margin: 12px 0 16px;
     }
 
     #ted-echo-optimized-prototype .echo-personal-message {
-      margin: 12px 0 18px;
+      margin: 10px 0 14px;
     }
 
     #ted-echo-optimized-prototype .echo-personal-message strong {
@@ -1341,6 +1342,14 @@ html&gt;body{padding:0}&lt;/style&gt;
 
     #ted-echo-optimized-prototype .echo-personal-message p {
       margin-bottom: 0;
+    }
+
+    #ted-echo-optimized-prototype .echo-profile-details {
+      margin: 10px 0 !important;
+    }
+
+    #ted-echo-optimized-prototype .echo-profile-details[open] &gt; summary {
+      margin-bottom: 12px;
     }
 
     #ted-echo-optimized-prototype .echo-axis-row {
@@ -1527,6 +1536,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       #ted-echo-optimized-prototype .echo-actions .btn { min-width: 0; flex: 1; }
       #ted-echo-optimized-prototype .echo-talk-title { font-size: 24px; }
       #ted-echo-optimized-prototype .echo-voice-score-grid { grid-template-columns: 1fr; }
+      #ted-echo-optimized-prototype .echo-profile { grid-template-columns: 1fr; gap: 12px; }
     }
 
     @media (max-width: 350px) {
@@ -1800,7 +1810,9 @@ html&gt;body{padding:0}&lt;/style&gt;
 
     &lt;section class=&quot;echo-screen&quot; data-screen=&quot;6&quot;&gt;
       &lt;p class=&quot;echo-kicker&quot;&gt;我的思辨空间&lt;/p&gt;
-      &lt;h2&gt;一次讨论，成为可以回看的成长证据&lt;/h2&gt;
+      &lt;h2&gt;你的思辨成长快照&lt;/h2&gt;
+      &lt;details class=&quot;echo-export echo-profile-details&quot;&gt;
+        &lt;summary&gt;成长概览与本次记录&lt;/summary&gt;
       &lt;p class=&quot;echo-section-label&quot;&gt;成长概览 · 原型模拟数据&lt;/p&gt;
       &lt;div class=&quot;echo-stat-grid&quot;&gt;
         &lt;div class=&quot;echo-stat-item&quot;&gt;&lt;strong&gt;8 次&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;累计完成讨论&lt;/span&gt;&lt;/div&gt;
@@ -1816,11 +1828,12 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;p id=&quot;echo-history-view&quot;&gt;AI 本身不会取消思考，错误的使用顺序才会。&lt;/p&gt;
         &lt;div class=&quot;text-small text-muted&quot;&gt;视角：&lt;span id=&quot;echo-history-perspective&quot;&gt;质疑&lt;/span&gt; · 对话默认仅本人可见&lt;/div&gt;
       &lt;/article&gt;
+      &lt;/details&gt;
 
-      &lt;p class=&quot;echo-section-label&quot;&gt;专属思辨画像 · 当前仅 1 个样本&lt;/p&gt;
+      &lt;p class=&quot;echo-section-label&quot;&gt;本次思辨画像 · 可解释、可修正&lt;/p&gt;
       &lt;div class=&quot;card echo-personal-message&quot;&gt;
         &lt;strong&gt;&lt;i data-lucide=&quot;scan-text&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 你的本次表达倾向&lt;/strong&gt;
-        &lt;p id=&quot;echo-personal-analysis&quot;&gt;你更倾向先进行理性拆解，再用个人经验校准判断。你没有简单把问题归因于 AI，而是区分了工具和使用方式；回应不同意见时，你选择部分认同并提出改进规则。下一次可以补充一条外部事实或数据，让个人经历形成更有普适性的论证。&lt;/p&gt;
+        &lt;p id=&quot;echo-personal-analysis&quot;&gt;你呈现出偏理性推演、经验与证据并用、愿意修正观点的倾向。建议下一次补充一条外部事实或反例。&lt;/p&gt;
       &lt;/div&gt;
 
       &lt;div class=&quot;echo-profile&quot; aria-label=&quot;基于本次文本的表达倾向刻度&quot;&gt;
@@ -1846,6 +1859,8 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;/div&gt;
       &lt;/div&gt;
 
+      &lt;details class=&quot;echo-export echo-profile-details&quot;&gt;
+        &lt;summary&gt;查看画像依据并校准&lt;/summary&gt;
       &lt;p class=&quot;echo-section-label&quot;&gt;本次判断来自这些表达证据&lt;/p&gt;
       &lt;div class=&quot;echo-evidence-row&quot; aria-label=&quot;画像分析证据&quot;&gt;
         &lt;span class=&quot;viz-badge&quot;&gt;区分“工具”与“使用顺序”&lt;/span&gt;
@@ -1866,7 +1881,10 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/div&gt;
 
       &lt;p class=&quot;text-small text-muted&quot; style=&quot;margin-top:12px&quot;&gt;这些结果只描述本次文本中的表达倾向，不等于稳定人格、MBTI 或心理测评。随着主题和样本增加，用户可查看变化、纠正结论或删除画像。&lt;/p&gt;
+      &lt;/details&gt;
 
+      &lt;details class=&quot;echo-export echo-profile-details&quot;&gt;
+        &lt;summary&gt;成长激励与口语素材&lt;/summary&gt;
       &lt;p class=&quot;echo-section-label&quot;&gt;成长激励&lt;/p&gt;
       &lt;div class=&quot;echo-badge-list&quot;&gt;
         &lt;div class=&quot;echo-badge-row&quot;&gt;&lt;i data-lucide=&quot;badge&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span&gt;&lt;strong&gt;质疑思考者&lt;/strong&gt;&lt;br&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;已使用质疑视角 5 次&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;viz-badge&quot;&gt;已获得&lt;/span&gt;&lt;/div&gt;
@@ -1883,7 +1901,10 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;/div&gt;
         &lt;div class=&quot;echo-extra-angle&quot; id=&quot;echo-member-preview&quot; hidden&gt;&lt;strong&gt;会员版规划&lt;/strong&gt;&lt;p style=&quot;margin:5px 0 0&quot;&gt;结构化素材、AI 润色建议和外教点评。当前仅展示产品规划，不产生购买行为。&lt;/p&gt;&lt;/div&gt;
       &lt;/details&gt;
+      &lt;/details&gt;
 
+      &lt;details class=&quot;echo-export echo-profile-details&quot;&gt;
+        &lt;summary&gt;隐私与分享 · 默认仅自己可见&lt;/summary&gt;
       &lt;p class=&quot;echo-section-label&quot;&gt;这次对话谁可以看？&lt;/p&gt;
       &lt;div class=&quot;echo-share-group&quot; role=&quot;radiogroup&quot; aria-label=&quot;分享范围&quot;&gt;
         &lt;label class=&quot;echo-share-option&quot;&gt;
@@ -1901,6 +1922,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/div&gt;
       &lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-block&quot; id=&quot;echo-save-btn&quot;&gt;保存本次设置&lt;/button&gt;
       &lt;div class=&quot;echo-toast&quot; id=&quot;echo-toast&quot; role=&quot;status&quot;&gt;已保存。当前分享范围：仅自己可见。&lt;/div&gt;
+      &lt;/details&gt;
       &lt;div class=&quot;echo-actions&quot;&gt;
         &lt;button type=&quot;button&quot; class=&quot;btn btn-ghost&quot; data-back&gt;返回总结&lt;/button&gt;
         &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;echo-restart-btn&quot;&gt;&lt;i data-lucide=&quot;rotate-ccw&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; 重新体验&lt;/button&gt;
@@ -2040,7 +2062,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         const dialogue = openScore &gt;= 62
           ? &#x27;回应不同意见时，你选择部分认同并提出改进规则，表现出较强的观点修正意愿。&#x27;
           : &#x27;回应不同意见时，你较快守住了原立场；下一次可以先准确复述对方理由，再决定是否调整。&#x27;;
-        personalAnalysis.textContent = `${opening}${basis}${dialogue}下一次可以补充一条外部事实或反例，检验个人经验是否具有普遍性。`;
+        personalAnalysis.textContent = `你呈现出“${rationalValue.textContent}、${evidenceValue.textContent}、${openValue.textContent}”的倾向。建议下一次补充一条外部事实或反例。`;
       }
 
       function showScreen(index) {
